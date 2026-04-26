@@ -1,3 +1,26 @@
 [gd_scene format=3 uid="uid://qgqvndai37vi"]
 
+[ext_resource type="PackedScene" uid="uid://d038k4uvwogdj" path="res://player.tscn" id="1_bri2l"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_jt1vd"]
+size = Vector3(10, 0.25, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bri2l"]
+size = Vector3(10, 0.25, 10)
+
 [node name="Level_01" type="Node3D" unique_id=607382832]
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1247048024]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=941699578]
+mesh = SubResource("BoxMesh_jt1vd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=793464784]
+shape = SubResource("BoxShape3D_bri2l")
+
+[node name="Player" parent="." unique_id=1124543933 instance=ExtResource("1_bri2l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=95206151]
+transform = Transform3D(1, 0, 0, 0, 0.7471024, 0.664709, 0, -0.664709, 0.7471024, 0, 5.3420677, 2.5999885)
+light_color = Color(0.998355, 0.9306036, 0.7588295, 1)

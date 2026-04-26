@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://d038k4uvwogdj"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_sh265"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4flbx"]
+size = Vector3(0.25, 0.25, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sh265"]
+
+[node name="Player" type="CharacterBody3D" unique_id=1124543933]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1779487778]
+mesh = SubResource("CapsuleMesh_sh265")
+
+[node name="ForwardDirection" type="MeshInstance3D" parent="Body" unique_id=1802438558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+mesh = SubResource("BoxMesh_4flbx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1780546839]
+shape = SubResource("CapsuleShape3D_sh265")
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1667598889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1062041461]
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=403956874]
+transform = Transform3D(1, 0, 0, 0, 0.9396926, 0.34202012, 0, -0.34202012, 0.9396926, 0, 0, 0)
