@@ -8,7 +8,8 @@ public partial class Player : CharacterBody3D
 	[Export] private float _rotationSpeed = 6f;
 	
 	[ExportGroup("References")]
-	[Export] private Node3D _playerModel;
+	[Export] private Node3D _cameraPivot;
+	
 	private Vector3 _moveDirection = Vector3.Zero;
 
 	public override void _UnhandledKeyInput(InputEvent @event)
@@ -26,20 +27,29 @@ public partial class Player : CharacterBody3D
 			return;
 		}
 
-		Velocity = _moveDirection * _baseMovementSpeed;
+		Vector3 rotatedDirection = Transform.Basis.Z * _moveDirection.Z;
+
+		Velocity = rotatedDirection * _baseMovementSpeed;
 	}
 
 	private void HandleRotation()
 	{
-		if (_playerModel == null || _moveDirection == Vector3.Zero)
+		if (_moveDirection == Vector3.Zero)
 		{
 			return;
 		}
 
-		float targetAngle = -Mathf.Atan2(_moveDirection.X, -_moveDirection.Z);
-		float smoothAngle = Mathf.LerpAngle(_playerModel.Rotation.Y, targetAngle, (float)(_rotationSpeed * GetProcessDeltaTime()));
+		float currentY = Rotation.Y;
+		float targetY = currentY - (_moveDirection.X * _rotationSpeed * (float)GetProcessDeltaTime());
 
-		_playerModel.Rotation = new Vector3(_playerModel.Rotation.X, smoothAngle, _playerModel.Rotation.Z);
+		Rotation = new Vector3(Rotation.X, targetY, Rotation.Z);
+	}
+
+	private void HandleCameraFollow()
+	{
+		if (_cameraPivot == null) return;
+
+		_cameraPivot.GlobalPosition = GlobalPosition + new Vector3(0, 2, 0);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -47,5 +57,6 @@ public partial class Player : CharacterBody3D
 		HandleRotation();
 		HandleMovement();
 		MoveAndSlide();
+		HandleCameraFollow();
 	}
 }
